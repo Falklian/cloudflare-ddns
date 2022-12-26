@@ -23,7 +23,6 @@ jobs:
         goos:
           - linux
           - darwin
-          - windows
         goarch:
           - amd64
           - arm64
@@ -41,20 +40,16 @@ jobs:
         with:
           go-version-file: go.mod
       - run: go mod tidy
-      - if: ${{ matrix.goos == 'windows' && matrix.goarch != 'arm64'}}
-        run: go build -o build/${{ env.output_name }}.exe -ldflags '-s -w'
-      - if: ${{ matrix.goos != 'windows' }}
-        run: go build -o build/${{ env.output_name }} -ldflags '-s -w'
+      - run: go build -o build/${{ env.output_name }} -ldflags '-s -w'
       - name: Compress executable
         uses: crazy-max/ghaction-upx@v2
         with:
           version: latest
-          files: build/${{ env.output_name }}*
+          files: build/${{ env.output_name }}
           args: --ultra-brute
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file_glob: true
-          file: build/${{ env.output_name }}*
+          file: build/${{ env.output_name }}
           tag: ${{ env.tag_name }}
