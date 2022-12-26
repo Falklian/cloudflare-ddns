@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.0...v1.0.1) (2022-12-26)
+
+
+### Bug Fixes
+
+* add GOOS and GOARCH env variables ([108cf74](https://github.com/Falklian/cloudflare-ddns/commit/108cf743746149427bb24e6260e412c40adaa6b4))
+
 ## 1.0.0 (2022-12-26)
 
 
