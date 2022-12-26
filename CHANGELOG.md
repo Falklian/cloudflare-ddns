@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.3...v1.0.4) (2022-12-26)
+
+
+### Bug Fixes
+
+* remove executable packing, re-add Windows builds ([d019a7e](https://github.com/Falklian/cloudflare-ddns/commit/d019a7ecd01aea522c8b382ac5540a0031a9548e))
+
 ## [1.0.3](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.2...v1.0.3) (2022-12-26)
 
 
