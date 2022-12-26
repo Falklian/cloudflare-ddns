@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.2...v1.0.3) (2022-12-26)
+
+
+### Bug Fixes
+
+* remove Windows build for now ([f8ec184](https://github.com/Falklian/cloudflare-ddns/commit/f8ec1844d7b8567e5e7cd7e9e585f04c12931173))
+
 ## [1.0.2](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.1...v1.0.2) (2022-12-26)
 
 
