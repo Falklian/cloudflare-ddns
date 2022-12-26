@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.1...v1.0.2) (2022-12-26)
+
+
+### Bug Fixes
+
+* remove arm build for Windows ([69d61f0](https://github.com/Falklian/cloudflare-ddns/commit/69d61f0d4a648c90637044f0af07cbe71d501050))
+
 ## [1.0.1](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.0...v1.0.1) (2022-12-26)
 
 
