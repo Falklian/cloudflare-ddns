@@ -8,11 +8,34 @@ Having an internet connection with a dynamic address can cause hiccups for self-
 
 ## Usage
 
-Binaries exist for Windows, Linux, and macOS (arm64 and amd64 builds) and can be found in the Releases section. Download the appropriate build for your operating system and save it to a directory that makes sense for your setup (e.g. `/usr/local/bin`)
+### Commands
+
+- `completion`: Generates shell completion scripts
+  - Sub-commands
+    - `bash`: Generates bash completions
+    - `fish`: Generates fish completions
+    - `powershell`: Generates powershell completions
+    - `zsh`: Generates zsh completions
+    - Flags
+      - `--no-descriptions`: Disables descriptions in completions
+- `configure`: Run configuration wizard (required)
+  - Aliases
+    - `config`
+    - `conf`
+- `help`: Help about any command
+- `publicIp`: Gets your public IP address
+  - Aliases
+    - `ip`
+- `update`: Updates DNS "A" records with your current IP address
+- Global flags
+  - `--config`: Path to config file (default: `~/.cloudflare-ddns/config.yaml`)
+  - `--cron`: Disables colored output (default: `false`)
+
+Binaries exist for Windows, Linux, and macOS (arm64 and amd64 builds) and can be found in the Releases section. Download the appropriate build for your operating system and save it to a directory that makes sense for your setup (e.g. `/usr/local/bin`). You can also run `go install github.com/Falklian/cloudflare-ddns@latest` to install the latest version of the tool to your `$GOPATH/bin` directory
 
 Before using the utility, you will want to create a config file with the command `cloudflare-ddns configure`. Both global Cloudflare API key/email addresss, or a scoped API token with `Zone:DNS:Edit` permissions will work for configuration
 
-To update DNS automatically, use the `update` command, optionally with the `--cron` flag to disable colored output. This would best be set up with a cronjob
+To update DNS automatically, use the `update` command. This would best be set up with a cronjob:
 
 ```shell
 # Open crontab
@@ -24,6 +47,28 @@ $ crontab -e
 
 There is also a `publicIp` command that will echo your public IP address to the terminal. This command does not require configuration to run
 
-## Known issues
+## Building and Contributing
 
-- Doesn't always pick up the config file, which seems to be a possible problem with [Viper](https://github.com/spf13/viper)
+### Prerequisites
+
+- Go 1.19+
+
+### Building
+
+```shell
+# Clone the repository
+$ git clone https://github.com/Falklian/cloudflare-ddns.git
+
+# Change into the directory
+$ cd cloudflare-ddns
+
+# Build the binary
+$ go build -o build/cloudflare-ddns -ldflags '-s -w'
+```
+
+## Feature Wishlist
+
+- [ ] Add logging support
+- [ ] Add support to allow specifiying "A" records to update
+- [ ] Add ipv6 support
+- [ ] Create Docker image
