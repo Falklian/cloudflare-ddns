@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.4...v1.1.0) (2022-12-27)
+
+
+### Features
+
+* add `ip` alias to `publicIp` command ([b3dec8b](https://github.com/Falklian/cloudflare-ddns/commit/b3dec8b48fb80714c9b02aa6070cd8905d1e4833))
+* make `--cron` flag global ([c68c6e3](https://github.com/Falklian/cloudflare-ddns/commit/c68c6e30702a5d7bea7d1d0ff8487e2818df5e1f))
+
+
+### Bug Fixes
+
+* better handling of config file ([c68c6e3](https://github.com/Falklian/cloudflare-ddns/commit/c68c6e30702a5d7bea7d1d0ff8487e2818df5e1f))
+
 ## [1.0.4](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.3...v1.0.4) (2022-12-26)
 
 
