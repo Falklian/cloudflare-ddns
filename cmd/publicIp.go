@@ -30,9 +30,10 @@ import (
 
 // publicIpCmd represents the publicIp command
 var publicIpCmd = &cobra.Command{
-	Use:   "publicIp",
-	Short: "Prints your public IP address",
-	Long:  `Prints your public IP address`,
+	Use:     "publicIp",
+	Aliases: []string{"ip"},
+	Short:   "Prints your public IP address",
+	Long:    `Prints your public IP address`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(utils.GetIp())
 	},
