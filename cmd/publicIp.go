@@ -25,6 +25,7 @@ import (
 	"fmt"
 
 	"github.com/Falklian/cloudflare-ddns/utils"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -35,7 +36,7 @@ var publicIpCmd = &cobra.Command{
 	Short:   "Prints your public IP address",
 	Long:    `Prints your public IP address`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(utils.GetIp())
+		fmt.Println(color.BlueString(utils.GetIp()))
 	},
 	DisableFlagsInUseLine: true,
 }

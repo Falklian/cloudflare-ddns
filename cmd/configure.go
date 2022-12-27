@@ -26,6 +26,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/fatih/color"
@@ -73,7 +74,14 @@ CTRL+C to quit at any time
 	if viper.ConfigFileUsed() == "" {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
-		viper.SetConfigFile(fmt.Sprintf("%s/.cloudflare-ddns", home))
+		viper.SetConfigFile(fmt.Sprintf("%s/.cloudflare-ddns/config.yml", home))
+	}
+
+	if _, err := os.Stat(filepath.Dir(viper.ConfigFileUsed())); errors.Is(err, os.ErrNotExist) {
+		if err := os.MkdirAll(filepath.Dir(viper.ConfigFileUsed()), 0755); err != nil {
+			fmt.Println(color.RedString("Failed to create configuration directory: %s", err))
+			return false
+		}
 	}
 
 	fmt.Print("Cloudflare API token (leave blank to use API key and email address): ")

@@ -42,8 +42,6 @@ type Config struct {
 	Zones    []string `mapstructure:"zones"`
 }
 
-var cron bool
-
 var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: `Update "A" records for all configured zones`,
@@ -52,10 +50,6 @@ var updateCmd = &cobra.Command{
 NOTE: *ALL* "A" records will be updated. If your zone has multiple "A" records, you
 may want to exclude it from updating`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if cron {
-			color.NoColor = true
-		}
-
 		if ok := checkConfigExists(); !ok {
 			fmt.Println(color.RedString("Please run `cloudflare-ddns configure` to configure the application"))
 			os.Exit(1)
@@ -119,10 +113,6 @@ may want to exclude it from updating`,
 			}
 		}
 	},
-}
-
-func init() {
-	updateCmd.Flags().BoolVar(&cron, "cron", false, "run in cron mode (no color output)")
 }
 
 func checkConfigExists() bool {

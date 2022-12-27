@@ -25,12 +25,17 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	cron    bool
+)
 
 var rootCmd = &cobra.Command{
 	Use: "cloudflare-ddns",
@@ -43,7 +48,8 @@ func Execute() error {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cloudflare-ddns)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cloudflare-ddns/config.yml)")
+	rootCmd.PersistentFlags().BoolVar(&cron, "cron", false, "run in cron mode (color output disabled; default is false)")
 	rootCmd.AddCommand(configureCmd, publicIpCmd, updateCmd)
 }
 
@@ -54,16 +60,23 @@ func initConfig() {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
 
-		viper.SetConfigName(".cloudflare-ddns")
+		viper.SetConfigName("config.yml")
 		viper.SetConfigType("yaml")
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(fmt.Sprintf("%s/.cloudflare-ddns", home))
+		viper.AddConfigPath(".")
 	}
 
 	viper.AutomaticEnv()
 
+	if cron {
+		color.NoColor = true
+	}
+
 	if err := viper.ReadInConfig(); err != nil {
+		// The below should work according to the docs, but it doesn't
+		// if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 		if ok := errors.Is(err, os.ErrNotExist); ok {
-			fmt.Println("No file yo")
+			fmt.Println(color.YellowString("Config file `%s` not found", filepath.Base(viper.ConfigFileUsed())))
 		}
 	}
 }
