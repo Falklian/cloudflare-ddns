@@ -35,10 +35,12 @@ import (
 var (
 	cfgFile string
 	cron    bool
+	version string = "(development)"
 )
 
 var rootCmd = &cobra.Command{
-	Use: "cloudflare-ddns",
+	Use:     "cloudflare-ddns",
+	Version: version,
 }
 
 func Execute() error {
@@ -51,6 +53,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cloudflare-ddns/config.yml)")
 	rootCmd.PersistentFlags().BoolVar(&cron, "cron", false, "run in cron mode (color output disabled; default is false)")
 	rootCmd.AddCommand(configureCmd, publicIpCmd, updateCmd)
+	rootCmd.SetVersionTemplate("cloudflare-ddns {{.Version}}\n")
 }
 
 func initConfig() {
