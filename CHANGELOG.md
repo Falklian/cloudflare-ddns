@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.1.0...v1.2.0) (2022-12-31)
+
+
+### Features
+
+* add version functionality ([f7c8ca8](https://github.com/Falklian/cloudflare-ddns/commit/f7c8ca86910419734a243ef6a5687fc043d46e3d))
+
 ## [1.1.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.0.4...v1.1.0) (2022-12-27)
 
 
