@@ -1,0 +1,36 @@
+name: Build Linux
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goarch:
+          - 386
+          - amd64
+          - arm
+          - arm64
+    env:
+      import_path: github.com/${{ github.repository }}
+      output_name: ${{ github.event.repository.name }}_${{ github.ref_name }}_linux_${{ matrix.goarch }}
+      GOARCH: ${{ matrix.goarch }}
+    steps:
+      - name: Check out ${{ github.repository }} repo
+        uses: actions/checkout@v3
+      - name: Build for ${{ matrix.goarch }}
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+      - run: go mod tidy
+      - run: go build -o build/${{ env.output_name }} -ldflags '-s -w -X ${{ env.import_path }}/cmd.version=${{ github.ref_name }}'
+      - name: Upload to ${{ github.ref_name }} release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/${{ env.output_name }}
+          tag: ${{ github.ref }}
