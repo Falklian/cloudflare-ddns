@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/Falklian/cloudflare-ddns/compare/v1.2.0...v1.2.1) (2022-12-31)
+
+
+### Bug Fixes
+
+* **build:** use release-specific token ([4fbcaad](https://github.com/Falklian/cloudflare-ddns/commit/4fbcaadea3c11e90396ba785ba62da769c0de9a1))
+
 ## [1.2.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.1.0...v1.2.0) (2022-12-31)
 
 
