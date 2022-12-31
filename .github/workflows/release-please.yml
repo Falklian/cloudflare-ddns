@@ -15,3 +15,4 @@ jobs:
         with:
           release-type: go
           package-name: ${{ github.event.repository.name }}
+          token: ${{ secrets.RELEASE_PLEASE }}
