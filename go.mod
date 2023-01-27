@@ -7,7 +7,6 @@ require (
 	github.com/fatih/color v1.14.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
-	golang.org/x/exp v0.0.0-20230126173853-a67bb567ff2e
 )
 
 require (
