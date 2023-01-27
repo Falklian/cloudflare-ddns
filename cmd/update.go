@@ -32,7 +32,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/exp/slices"
 )
 
 type Config struct {
@@ -74,46 +73,42 @@ may want to exclude it from updating`,
 
 		context := context.Background()
 
-		zones, err := api.ListZones(context)
-		if err != nil {
-			fmt.Println(color.RedString("Error listing zones: %s", err))
-			os.Exit(1)
-		}
+		for _, zoneName := range config.Zones {
+			fmt.Println(color.GreenString("Fetching zone ID for %s", zoneName))
+			zoneId, err := api.ZoneIDByName(zoneName)
+			if err != nil {
+				fmt.Println(color.RedString("Error fetching zone ID: %s", err))
+				os.Exit(1)
+			}
 
-		for _, zone := range zones {
-			if slices.Contains(config.Zones, zone.Name) {
-				fmt.Println(color.GreenString("Updating DNS records for %s", zone.Name))
-				records, _, err := api.ListDNSRecords(context, cloudflare.ResourceIdentifier(zone.ID), cloudflare.ListDNSRecordsParams{})
+			fmt.Println(color.GreenString("Fetching DNS A records for %s", zoneName))
+			records, _, err := api.ListDNSRecords(context, cloudflare.ResourceIdentifier(zoneId),
+				cloudflare.ListDNSRecordsParams{Type: "A"})
+			if err != nil {
+				fmt.Println(color.RedString("Error fetching DNS records: %s", err))
+				os.Exit(1)
+			}
+
+			currentIp := utils.GetIp()
+			fmt.Println(color.GreenString("Current IP: %s", currentIp))
+
+			for _, record := range records {
+				fmt.Println(color.GreenString("Updating DNS record %s", record.Name))
+
+				if record.Content == currentIp {
+					fmt.Println(color.YellowString("DNS record %s is already up to date", record.Name))
+					continue
+				}
+				updatedRecord := cloudflare.UpdateDNSRecordParams{ID: record.ID, Content: currentIp}
+
+				err := api.UpdateDNSRecord(context, cloudflare.ResourceIdentifier(zoneId), updatedRecord)
 				if err != nil {
-					fmt.Println(color.RedString("Error listing DNS records: %s", err))
+					fmt.Println(color.RedString("Error updating DNS record: %s", err))
 					os.Exit(1)
 				}
-
-				currentIp := utils.GetIp()
-				fmt.Println(color.GreenString("Current IP: %s", currentIp))
-
-				for _, record := range records {
-					if record.Type == "A" {
-						fmt.Println(color.GreenString("Updating DNS record %s", record.Name))
-
-						if record.Content == currentIp {
-							fmt.Println(color.YellowString("DNS record %s is already up to date", record.Name))
-							continue
-						}
-						updatedRecord := cloudflare.UpdateDNSRecordParams{
-							ID:      record.ID,
-							Content: currentIp,
-						}
-
-						err := api.UpdateDNSRecord(context, cloudflare.ResourceIdentifier(zone.ID), updatedRecord)
-						if err != nil {
-							fmt.Println(color.RedString("Error updating DNS record: %s", err))
-							os.Exit(1)
-						}
-						fmt.Println(color.GreenString("DNS record %s updated successfully", record.Name))
-					}
-				}
+				fmt.Println(color.GreenString("DNS record %s updated successfully", record.Name))
 			}
+
 		}
 	},
 }
