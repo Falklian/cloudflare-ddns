@@ -83,7 +83,7 @@ may want to exclude it from updating`,
 		for _, zone := range zones {
 			if slices.Contains(config.Zones, zone.Name) {
 				fmt.Println(color.GreenString("Updating DNS records for %s", zone.Name))
-				records, err := api.DNSRecords(context, zone.ID, cloudflare.DNSRecord{})
+				records, _, err := api.ListDNSRecords(context, cloudflare.ResourceIdentifier(zone.ID), cloudflare.ListDNSRecordsParams{})
 				if err != nil {
 					fmt.Println(color.RedString("Error listing DNS records: %s", err))
 					os.Exit(1)
@@ -100,9 +100,12 @@ may want to exclude it from updating`,
 							fmt.Println(color.YellowString("DNS record %s is already up to date", record.Name))
 							continue
 						}
-						record.Content = currentIp
+						updatedRecord := cloudflare.UpdateDNSRecordParams{
+							ID:      record.ID,
+							Content: currentIp,
+						}
 
-						err := api.UpdateDNSRecord(context, zone.ID, record.ID, record)
+						err := api.UpdateDNSRecord(context, cloudflare.ResourceIdentifier(zone.ID), updatedRecord)
 						if err != nil {
 							fmt.Println(color.RedString("Error updating DNS record: %s", err))
 							os.Exit(1)
