@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.2.1...v1.3.0) (2023-01-28)
+
+
+### Features
+
+* add flags to `update` command ([3aa3a79](https://github.com/Falklian/cloudflare-ddns/commit/3aa3a79a9aa6218b5f583a9ff646be2daff6dffa))
+
 ## [1.2.1](https://github.com/Falklian/cloudflare-ddns/compare/v1.2.0...v1.2.1) (2022-12-31)
 
 
