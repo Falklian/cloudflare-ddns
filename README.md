@@ -27,13 +27,20 @@ Having an internet connection with a dynamic address can cause hiccups for self-
   - Aliases
     - `ip`
 - `update`: Updates DNS "A" records with your current IP address
+  - Flags
+    - `--api-key`: Cloudflare Global API key. Must be used with `--email`
+    - `--email`: Cloudflare account email address. Must be used with `--api-key`
+    - `--token`: Cloudflare API token with `Zone:DNS:Edit` permissions. Can be used in place of `--api-key` and `--email`
+    - `--zone`: comma-seperated list of Cloudflare zone IDs
 - Global flags
   - `--config`: Path to config file (default: `~/.cloudflare-ddns/config.yaml`)
   - `--cron`: Disables colored output (default: `false`)
 
-Binaries exist for Windows, Linux, and macOS (arm64 and amd64 builds) and can be found in the Releases section. Download the appropriate build for your operating system and save it to a directory that makes sense for your setup (e.g. `/usr/local/bin`). You can also run `go install github.com/Falklian/cloudflare-ddns@latest` to install the latest version of the tool to your `$GOPATH/bin` directory
+Binaries exist for Windows, Linux, and macOS and can be found in the Releases section. Download the appropriate build for your operating system and save it to a directory that makes sense for your setup (e.g. `/usr/local/bin`). You can also run `go install github.com/Falklian/cloudflare-ddns@latest` to install the latest version of the tool to your `$GOPATH/bin` directory
 
 Before using the utility, you will want to create a config file with the command `cloudflare-ddns configure`. Both global Cloudflare API key/email addresss, or a scoped API token with `Zone:DNS:Edit` permissions will work for configuration
+
+As an alternative to creating a config file, you can pass the `--api-key`, `--email`, and `--zone` flags to the `update` command. If you are using a scoped API token, you can pass the `--token` flag instead of `--api-key` and `--email`
 
 To update DNS automatically, use the `update` command. This would best be set up with a cronjob:
 
@@ -68,6 +75,7 @@ $ go build -o build/cloudflare-ddns -ldflags '-s -w'
 
 ## Feature Wishlist
 
+- [x] Add flags for use in place of generating a config file
 - [ ] Add logging support
 - [ ] Add support to allow specifiying "A" records to update
 - [ ] Add ipv6 support
