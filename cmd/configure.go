@@ -89,15 +89,15 @@ CTRL+C to quit at any time
 	cfAPIToken := scanner.Text()
 
 	if cfAPIToken != "" {
-		viper.Set("cf_api_token", cfAPIToken)
+		viper.Set("api-token", cfAPIToken)
 	} else {
 		fmt.Print("Cloudflare API key: ")
 		scanner.Scan()
-		viper.Set("cf_api_key", scanner.Text())
+		viper.Set("api-key", scanner.Text())
 
 		fmt.Print("Cloudflare email address: ")
 		scanner.Scan()
-		viper.Set("cf_email_address", scanner.Text())
+		viper.Set("email", scanner.Text())
 	}
 
 	fmt.Print("List of domains to update (comma-separated): ")
