@@ -4,7 +4,7 @@ A tool for automatically updating dynamic IP addresses in Cloudflare
 
 ## Purpose
 
-Having an internet connection with a dynamic address can cause hiccups for self-hosters. This tool can be set up using a cronjob to periodically update Cloudflare with any possible IP adress changes
+Having an internet connection with a dynamic IP address can cause hiccups for self-hosters. This tool can be set up using a cronjob to periodically update Cloudflare with any possible IP address changes
 
 ## Usage
 
@@ -75,7 +75,7 @@ $ go build -o build/cloudflare-ddns -ldflags '-s -w'
 
 ## Feature Wishlist
 
-- [x] Add flags for use in place of generating a config file
+- [x] ~~Add flags for use in place of generating a config file~~
 - [ ] Add logging support
 - [ ] Add support to allow specifiying "A" records to update
 - [ ] Add ipv6 support
