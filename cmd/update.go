@@ -33,19 +33,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	APIKey   string
-	Email    string
-	APIToken string
-	Zones    []string
-)
-
-type Config struct {
+type config struct {
 	APIKey   string   `mapstructure:"api-key"`
 	Email    string   `mapstructure:"email"`
 	APIToken string   `mapstructure:"api-token"`
 	Zones    []string `mapstructure:"zones"`
 }
+
+var cfConfig *config
 
 var updateCmd = &cobra.Command{
 	Use:   "update",
@@ -55,10 +50,9 @@ var updateCmd = &cobra.Command{
 NOTE: *ALL* "A" records will be updated. If your zone has multiple "A" records, you
 may want to exclude it from updating`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var config *Config
-		viper.Unmarshal(&config)
+		viper.Unmarshal(&cfConfig)
 
-		if config.APIKey == "" && config.APIToken == "" {
+		if cfConfig.APIKey == "" && cfConfig.APIToken == "" {
 			fmt.Println(color.RedString("Please run `cloudflare-ddns configure` to configure the application"))
 			os.Exit(1)
 		}
@@ -66,10 +60,10 @@ may want to exclude it from updating`,
 		var api *cloudflare.API
 		var err error
 
-		if config.APIToken != "" {
-			api, err = cloudflare.NewWithAPIToken(config.APIToken)
+		if cfConfig.APIToken != "" {
+			api, err = cloudflare.NewWithAPIToken(cfConfig.APIToken)
 		} else {
-			api, err = cloudflare.New(config.APIKey, config.Email)
+			api, err = cloudflare.New(cfConfig.APIKey, cfConfig.Email)
 		}
 
 		if err != nil {
@@ -80,7 +74,7 @@ may want to exclude it from updating`,
 		context := context.Background()
 		currentIp := utils.GetIp()
 
-		for _, zoneName := range config.Zones {
+		for _, zoneName := range cfConfig.Zones {
 			fmt.Println(color.GreenString("Fetching zone ID for %s", zoneName))
 			zoneId, err := api.ZoneIDByName(zoneName)
 			if err != nil {
@@ -120,15 +114,15 @@ may want to exclude it from updating`,
 }
 
 func init() {
-	updateCmd.Flags().StringVar(&APIKey, "api-key", "", "Cloudflare API key (required if email is set)")
-	updateCmd.Flags().StringVar(&Email, "email", "", "Cloudflare email address (required if api-key is set")
+	updateCmd.Flags().StringVar(&cfConfig.APIKey, "api-key", "", "Cloudflare API key (required if email is set)")
+	updateCmd.Flags().StringVar(&cfConfig.Email, "email", "", "Cloudflare email address (required if api-key is set")
 	updateCmd.MarkFlagsRequiredTogether("api-key", "email")
 
-	updateCmd.Flags().StringVar(&APIToken, "api-token", "",
+	updateCmd.Flags().StringVar(&cfConfig.APIToken, "api-token", "",
 		"Cloudflare API token (required if api-key and email are not set)")
 	updateCmd.MarkFlagsMutuallyExclusive("api-key", "api-token")
 
-	updateCmd.Flags().StringSliceVar(&Zones, "zones", []string{}, "List of comma-seperated zones to update")
+	updateCmd.Flags().StringSliceVar(&cfConfig.Zones, "zones", []string{}, "List of comma-seperated zones to update")
 
 	viper.BindPFlags(updateCmd.Flags())
 }
