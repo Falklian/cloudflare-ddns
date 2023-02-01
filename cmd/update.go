@@ -40,7 +40,7 @@ type config struct {
 	Zones    []string `mapstructure:"zones"`
 }
 
-var cfConfig *config
+var cfConfig config
 
 var updateCmd = &cobra.Command{
 	Use:   "update",
