@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/Falklian/cloudflare-ddns/compare/v1.3.0...v1.3.1) (2023-05-22)
+
+
+### Bug Fixes
+
+* invalid pointer dereference in `update` command ([7551975](https://github.com/Falklian/cloudflare-ddns/commit/75519758c9da26124410ecb188ea3a736feba57f))
+
 ## [1.3.0](https://github.com/Falklian/cloudflare-ddns/compare/v1.2.1...v1.3.0) (2023-01-28)
 
 
