@@ -38,9 +38,11 @@ var configureCmd = &cobra.Command{
 	Use:     "configure",
 	Aliases: []string{"config", "conf"},
 	Short:   "Create configuration file (required)",
-	Long: `Creates a configuration file for cloudflare-ddns. This is required before running any other commands.
+	Long: `Creates a configuration file for cloudflare-ddns. This is required before
+running any other commands
 
-Scoped Cloudflare API tokens can be used, as well as the Global API Key and account email address.`,
+Scoped Cloudflare API tokens can be used, as well as the Global API Key
+and account email address`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(color.GreenString("\n---=== Configuring Cloudflare DDNS client ===---"))
 		if ok := createConfig(); !ok {
@@ -56,7 +58,7 @@ func createConfig() bool {
 
 	fmt.Print(color.GreenString(`
 Please enter either your Cloudflare API key and email address, or API token.
-You can find API keys/tokens at https://dash.cloudflare.com/profile/api-tokens.
+You can find API keys/tokens at https://dash.cloudflare.com/profile/api-tokens
 
 CTRL+C to quit at any time
 

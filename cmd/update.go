@@ -45,10 +45,12 @@ var cfConfig config
 var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: `Update "A" records for all configured zones`,
-	Long: `Updates the "A" records for all domains/zones found in the config file.
+	Long: `Updates the "A" records for all domains/zones found in the config file
+or using the --zones flag. Specifying API key/token, email, or zones
+via flags will override the config file
 
-NOTE: *ALL* "A" records will be updated. If your zone has multiple "A" records, you
-may want to exclude it from updating`,
+NOTE: *ALL* "A" records will be updated. If your zone has multiple "A"
+records, you may want to exclude it from updating`,
 	Run: func(cmd *cobra.Command, args []string) {
 		viper.Unmarshal(&cfConfig)
 
@@ -101,7 +103,7 @@ may want to exclude it from updating`,
 				}
 				updatedRecord := cloudflare.UpdateDNSRecordParams{ID: record.ID, Content: currentIp}
 
-				err := api.UpdateDNSRecord(context, cloudflare.ResourceIdentifier(zoneId), updatedRecord)
+				_, err := api.UpdateDNSRecord(context, cloudflare.ResourceIdentifier(zoneId), updatedRecord)
 				if err != nil {
 					fmt.Println(color.RedString("Error updating DNS record: %s", err))
 					os.Exit(1)
